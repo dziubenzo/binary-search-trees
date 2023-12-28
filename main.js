@@ -74,6 +74,17 @@ class Tree {
 
   delete(value) {
     const deleteValue = (value, root = this.root) => {
+      if (root.data === value) {
+        // Normal case (there is at least one node in root.right.left)
+        if (root.right.left !== null) {
+          root.data = findInorderSuccessor(root.right);
+          // Abnormal case (root.right.left === null)
+        } else {
+          root.data = root.right.data;
+          root.right = root.right.right;
+        }
+        return;
+      }
       if (root.left && root.left.data === value) {
         // Case 1 - leaf node
         if (root.left.left === null && root.left.right === null) {
@@ -85,7 +96,14 @@ class Tree {
           root.left = root.left.right;
           // Case 3 - node with both children
         } else {
-          root.left.data = findInorderSuccessor(root.left.right);
+          // Normal case (there is at least one node in root.left.right.left)
+          if (root.left.right.left !== null) {
+            root.left.data = findInorderSuccessor(root.left.right);
+            // Abnormal case (root.left.right.left === null)
+          } else {
+            root.left.data = root.left.right.data;
+            root.left.right = root.left.right.right;
+          }
         }
         return;
       }
@@ -100,7 +118,14 @@ class Tree {
           root.right = root.right.right;
           // Case 3 - node with both children
         } else {
-          root.right.data = findInorderSuccessor(root.right.right);
+          // Normal case (there is at least one node in root.right.right.left)
+          if (root.right.right.left !== null) {
+            root.right.data = findInorderSuccessor(root.right.right);
+            // Abnormal case (root.right.right.left === null)
+          } else {
+            root.right.data = root.right.right.data;
+            root.right.right = root.right.right.right;
+          }
         }
         return;
       }
@@ -141,5 +166,9 @@ tree.insert(123);
 tree.insert(69);
 tree.insert(71);
 tree.insert(70);
-tree.delete(67);
+tree.delete(8);
+tree.delete(9);
+tree.delete(10);
+tree.delete(12);
+// tree.delete(23);
 prettyPrint(tree.root);
