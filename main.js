@@ -71,6 +71,29 @@ class Tree {
     };
     insertValue(value);
   }
+
+  delete(value) {
+    const deleteValue = (value, root = this.root) => {
+      if (root.left !== null && root.left.data === value) {
+        if (root.left.left === null && root.left.right === null) {
+          root.left = null;
+          return;
+        }
+      }
+      if (root.right !== null && root.right.data === value) {
+        if (root.right.left === null && root.right.right === null) {
+          root.right = null;
+          return;
+        }
+      }
+      if (value > root.data) {
+        deleteValue(value, root.right);
+      } else {
+        deleteValue(value, root.left);
+      }
+    };
+    deleteValue(value);
+  }
 }
 
 const array0 = [1, 2, 3, 4];
@@ -81,5 +104,5 @@ let tree = new Tree(array2);
 tree.insert(2);
 tree.insert(12);
 tree.insert(10);
+tree.delete(2);
 prettyPrint(tree.root);
-// console.log(tree.root);
