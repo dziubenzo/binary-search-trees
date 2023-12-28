@@ -55,7 +55,7 @@ class Tree {
 
   insert(value) {
     const insertValue = (value, root = this.root) => {
-      if (root.left === null || root.right === null) {
+      if (root.left === null && root.right === null) {
         if (value > root.data) {
           root.right = new Node(value);
         } else {
@@ -80,5 +80,6 @@ const array2 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let tree = new Tree(array2);
 tree.insert(2);
 tree.insert(12);
+tree.insert(10);
 prettyPrint(tree.root);
-console.log(tree.root);
+// console.log(tree.root);
