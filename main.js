@@ -83,6 +83,9 @@ class Tree {
           root.left = root.left.left;
         } else if (root.left.right && root.left.left === null) {
           root.left = root.left.right;
+          // Case 3 - node with both children
+        } else {
+          root.left.data = findInorderSuccessor(root.left.right);
         }
         return;
       }
@@ -95,6 +98,9 @@ class Tree {
           root.right = root.right.left;
         } else if (root.right.right && root.right.left === null) {
           root.right = root.right.right;
+          // Case 3 - node with both children
+        } else {
+          root.right.data = findInorderSuccessor(root.right.right);
         }
         return;
       }
@@ -103,6 +109,21 @@ class Tree {
       } else {
         deleteValue(value, root.left);
       }
+    };
+    // Helper function for finding the next highest value recursively and modifying nodes
+    const findInorderSuccessor = (currentNode) => {
+      const nextNextNode = currentNode.left.left;
+      if (nextNextNode === null) {
+        let value = currentNode.left.data;
+        if (currentNode.left.right) {
+          currentNode.left = currentNode.left.right;
+        } else {
+          currentNode.left = null;
+        }
+        return value;
+      }
+      const value = findInorderSuccessor(currentNode.left);
+      return value;
     };
     deleteValue(value);
   }
@@ -116,5 +137,9 @@ let tree = new Tree(array2);
 tree.insert(2);
 tree.insert(12);
 tree.insert(10);
-tree.delete(23);
+tree.insert(123);
+tree.insert(69);
+tree.insert(71);
+tree.insert(70);
+tree.delete(67);
 prettyPrint(tree.root);
