@@ -52,6 +52,25 @@ class Tree {
     };
     return createBST(this.sortedArray, 0, this.sortedArray.length - 1);
   }
+
+  insert(value) {
+    const insertValue = (value, root = this.root) => {
+      if (root.left === null || root.right === null) {
+        if (value > root.data) {
+          root.right = new Node(value);
+        } else {
+          root.left = new Node(value);
+        }
+        return;
+      }
+      if (value > root.data) {
+        insertValue(value, root.right);
+      } else {
+        insertValue(value, root.left);
+      }
+    };
+    insertValue(value);
+  }
 }
 
 const array0 = [1, 2, 3, 4];
@@ -59,5 +78,7 @@ const array1 = [0, 1, 2, 3, 4, 5, 6, 7];
 const array2 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 let tree = new Tree(array2);
+tree.insert(2);
+tree.insert(12);
 prettyPrint(tree.root);
-console.log(tree);
+console.log(tree.root);
