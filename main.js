@@ -74,17 +74,29 @@ class Tree {
 
   delete(value) {
     const deleteValue = (value, root = this.root) => {
-      if (root.left !== null && root.left.data === value) {
+      if (root.left && root.left.data === value) {
+        // Case 1 - leaf node
         if (root.left.left === null && root.left.right === null) {
           root.left = null;
-          return;
+          // Case 2 - node with single child
+        } else if (root.left.left && root.left.right === null) {
+          root.left = root.left.left;
+        } else if (root.left.right && root.left.left === null) {
+          root.left = root.left.right;
         }
+        return;
       }
-      if (root.right !== null && root.right.data === value) {
+      if (root.right && root.right.data === value) {
+        // Case 1 - leaf node
         if (root.right.left === null && root.right.right === null) {
           root.right = null;
-          return;
+          // Case 2 - node with single child
+        } else if (root.right.left && root.right.right === null) {
+          root.right = root.right.left;
+        } else if (root.right.right && root.right.left === null) {
+          root.right = root.right.right;
         }
+        return;
       }
       if (value > root.data) {
         deleteValue(value, root.right);
@@ -104,5 +116,5 @@ let tree = new Tree(array2);
 tree.insert(2);
 tree.insert(12);
 tree.insert(10);
-tree.delete(2);
+tree.delete(23);
 prettyPrint(tree.root);
