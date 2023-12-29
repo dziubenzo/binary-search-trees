@@ -85,14 +85,7 @@ class Tree {
           return root.right;
           // Case 3 - node with both children
         } else {
-          // Normal case (there is at least one node in root.right.left)
-          if (root.right.left !== null) {
-            root.data = findInorderSuccessor(root.right);
-            // Abnormal case (root.right.left === null)
-          } else {
-            root.data = root.right.data;
-            root.right = root.right.right;
-          }
+          root = findInorderSuccessor(root, root.right);
           return root;
         }
       }
@@ -104,19 +97,29 @@ class Tree {
       return root;
     };
     // Helper function for finding the next highest value recursively and modifying nodes accordingly
-    const findInorderSuccessor = (currentNode) => {
+    const findInorderSuccessor = (root, currentNode) => {
+      // Case 1 - the successor is immediately right to the root
+      if (currentNode.left === null) {
+        root.data = currentNode.data;
+        if (currentNode.right) {
+          root.right = currentNode.right;
+        } else {
+          root.right = null;
+        }
+        return root;
+      }
+      // Case 2 - the successor is somewhere to the left of the right subtree of the root
       const nextNextNode = currentNode.left.left;
       if (nextNextNode === null) {
-        let value = currentNode.left.data;
+        root.data = currentNode.left.data;
         if (currentNode.left.right) {
           currentNode.left = currentNode.left.right;
         } else {
           currentNode.left = null;
         }
-        return value;
+        return root;
       }
-      const value = findInorderSuccessor(currentNode.left);
-      return value;
+      findInorderSuccessor(root, currentNode.left);
     };
     deleteValue(value);
   }
@@ -135,9 +138,13 @@ tree.insert(69);
 tree.insert(71);
 tree.insert(70);
 tree.insert(68);
+// tree.delete(4);
+// tree.delete(5);
+// tree.delete(7);
 // tree.delete(8);
 // tree.delete(9);
 // tree.delete(10);
 // tree.delete(12);
 // tree.delete(23);
+// tree.delete(6345);
 prettyPrint(tree.root);
