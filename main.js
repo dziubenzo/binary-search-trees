@@ -142,21 +142,64 @@ class Tree {
     };
     return console.log(findValue(value));
   }
+
+  levelOrderIterative(callback = null) {
+    if (!callback) {
+      const array = [];
+      const queue = [this.root];
+      while (queue.length > 0) {
+        let node = queue.shift();
+        array.push(node.data);
+        if (node.left) {
+          queue.push(node.left);
+        }
+        if (node.right) {
+          queue.push(node.right);
+        }
+      }
+      return console.log(array);
+    } else {
+      console.log(callback);
+    }
+  }
+
+  levelOrderRecursive(callback = null) {
+    const breadthFirstSearch = (node, queue = [], array = []) => {
+      if (!node) {
+        return;
+      }
+      array.push(node.data);
+      if (node.left) {
+        queue.push(node.left);
+      }
+      if (node.right) {
+        queue.push(node.right);
+      }
+      breadthFirstSearch(queue.shift(), queue, array);
+      return array;
+    };
+    if (!callback) {
+      const array = breadthFirstSearch(this.root);
+      console.log(array);
+    } else {
+      console.log(callback);
+    }
+  }
 }
 
 const array0 = [1, 2, 3, 4];
 const array1 = [0, 1, 2, 3, 4, 5, 6, 7];
 const array2 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
-let tree = new Tree(array2);
-tree.insert(2);
-tree.insert(12);
-tree.insert(10);
-tree.insert(123);
-tree.insert(69);
-tree.insert(71);
-tree.insert(70);
-tree.insert(68);
+let tree = new Tree(array1);
+// tree.insert(2);
+// tree.insert(12);
+// tree.insert(10);
+// tree.insert(123);
+// tree.insert(69);
+// tree.insert(71);
+// tree.insert(70);
+// tree.insert(68);
 // tree.delete(4);
 // tree.delete(5);
 // tree.delete(7);
@@ -166,5 +209,6 @@ tree.insert(68);
 // tree.delete(12);
 // tree.delete(23);
 // tree.delete(6345);
-tree.find(23);
+// tree.find(23);
+tree.levelOrderRecursive();
 prettyPrint(tree.root);
