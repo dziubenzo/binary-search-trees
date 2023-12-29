@@ -55,12 +55,12 @@ class Tree {
 
   insert(value) {
     const insertValue = (value, root = this.root) => {
-      if (root.left === null && root.right === null) {
-        if (value > root.data) {
-          root.right = new Node(value);
-        } else {
-          root.left = new Node(value);
-        }
+      if (root.left === null && value < root.data) {
+        root.left = new Node(value);
+        return;
+      }
+      if (root.right === null && value > root.data) {
+        root.right = new Node(value);
         return;
       }
       if (value > root.data) {
@@ -74,6 +74,7 @@ class Tree {
 
   delete(value) {
     const deleteValue = (value, root = this.root) => {
+      // Case 3 for the root of the entire tree
       if (root.data === value) {
         // Normal case (there is at least one node in root.right.left)
         if (root.right.left !== null) {
@@ -135,7 +136,7 @@ class Tree {
         deleteValue(value, root.left);
       }
     };
-    // Helper function for finding the next highest value recursively and modifying nodes
+    // Helper function for finding the next highest value recursively and modifying nodes accordingly
     const findInorderSuccessor = (currentNode) => {
       const nextNextNode = currentNode.left.left;
       if (nextNextNode === null) {
@@ -166,9 +167,10 @@ tree.insert(123);
 tree.insert(69);
 tree.insert(71);
 tree.insert(70);
-tree.delete(8);
-tree.delete(9);
-tree.delete(10);
-tree.delete(12);
+tree.insert(68);
+// tree.delete(8);
+// tree.delete(9);
+// tree.delete(10);
+// tree.delete(12);
 // tree.delete(23);
 prettyPrint(tree.root);
