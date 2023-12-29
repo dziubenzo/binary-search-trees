@@ -74,67 +74,34 @@ class Tree {
 
   delete(value) {
     const deleteValue = (value, root = this.root) => {
-      // Case 3 for the root of the entire tree
       if (root.data === value) {
-        // Normal case (there is at least one node in root.right.left)
-        if (root.right.left !== null) {
-          root.data = findInorderSuccessor(root.right);
-          // Abnormal case (root.right.left === null)
-        } else {
-          root.data = root.right.data;
-          root.right = root.right.right;
-        }
-        return;
-      }
-      if (root.left && root.left.data === value) {
         // Case 1 - leaf node
-        if (root.left.left === null && root.left.right === null) {
-          root.left = null;
+        if (root.left === null && root.right === null) {
+          return null;
           // Case 2 - node with single child
-        } else if (root.left.left && root.left.right === null) {
-          root.left = root.left.left;
-        } else if (root.left.right && root.left.left === null) {
-          root.left = root.left.right;
+        } else if (root.right === null) {
+          return root.left;
+        } else if (root.left === null) {
+          return root.right;
           // Case 3 - node with both children
         } else {
-          // Normal case (there is at least one node in root.left.right.left)
-          if (root.left.right.left !== null) {
-            root.left.data = findInorderSuccessor(root.left.right);
-            // Abnormal case (root.left.right.left === null)
+          // Normal case (there is at least one node in root.right.left)
+          if (root.right.left !== null) {
+            root.data = findInorderSuccessor(root.right);
+            // Abnormal case (root.right.left === null)
           } else {
-            root.left.data = root.left.right.data;
-            root.left.right = root.left.right.right;
+            root.data = root.right.data;
+            root.right = root.right.right;
           }
+          return root;
         }
-        return;
-      }
-      if (root.right && root.right.data === value) {
-        // Case 1 - leaf node
-        if (root.right.left === null && root.right.right === null) {
-          root.right = null;
-          // Case 2 - node with single child
-        } else if (root.right.left && root.right.right === null) {
-          root.right = root.right.left;
-        } else if (root.right.right && root.right.left === null) {
-          root.right = root.right.right;
-          // Case 3 - node with both children
-        } else {
-          // Normal case (there is at least one node in root.right.right.left)
-          if (root.right.right.left !== null) {
-            root.right.data = findInorderSuccessor(root.right.right);
-            // Abnormal case (root.right.right.left === null)
-          } else {
-            root.right.data = root.right.right.data;
-            root.right.right = root.right.right.right;
-          }
-        }
-        return;
       }
       if (value > root.data) {
-        deleteValue(value, root.right);
+        root.right = deleteValue(value, root.right);
       } else {
-        deleteValue(value, root.left);
+        root.left = deleteValue(value, root.left);
       }
+      return root;
     };
     // Helper function for finding the next highest value recursively and modifying nodes accordingly
     const findInorderSuccessor = (currentNode) => {
