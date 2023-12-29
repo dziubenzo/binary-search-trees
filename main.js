@@ -123,6 +123,25 @@ class Tree {
     };
     deleteValue(value);
   }
+
+  find(value) {
+    const findValue = (value, root = this.root) => {
+      if (root === null) {
+        return 'Value not found.';
+      }
+      if (value === root.data) {
+        return root;
+      }
+      let node;
+      if (value > root.data) {
+        node = findValue(value, root.right);
+      } else {
+        node = findValue(value, root.left);
+      }
+      return node;
+    };
+    return console.log(findValue(value));
+  }
 }
 
 const array0 = [1, 2, 3, 4];
@@ -147,4 +166,5 @@ tree.insert(68);
 // tree.delete(12);
 // tree.delete(23);
 // tree.delete(6345);
+tree.find(23);
 prettyPrint(tree.root);
