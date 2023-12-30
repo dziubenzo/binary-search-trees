@@ -28,15 +28,19 @@ class Tree {
     }
     // Keep original array
     this.originalArray = array;
-    // Remove duplicates from and sort the original array;
-    let noDuplicates = [];
+    this.sortedArray = Tree.prepareArray(this.originalArray);
+    this.root = this.buildTree();
+  }
+
+  // Remove duplicates from and sort the array
+  static prepareArray(array) {
+    let newArray = [];
     array.forEach((value) => {
-      if (!noDuplicates.includes(value)) {
-        noDuplicates.push(value);
+      if (!newArray.includes(value)) {
+        newArray.push(value);
       }
     });
-    this.sortedArray = noDuplicates.sort((a, b) => a - b);
-    this.root = this.buildTree();
+    return newArray.sort((a, b) => a - b);
   }
 
   buildTree() {
@@ -311,21 +315,31 @@ class Tree {
     };
     return checkBalance();
   }
+
+  rebalance() {
+    if (this.isBalanced()) {
+      return console.log("I'm already balanced. Leave me alone!");
+    }
+    this.originalArray = this.levelOrderIterative();
+    this.sortedArray = Tree.prepareArray(this.originalArray);
+    this.root = this.buildTree();
+  }
 }
 
 const array0 = [1, 2, 3, 4];
 const array1 = [0, 1, 2, 3, 4, 5, 6, 7];
 const array2 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
-let tree = new Tree(array1);
-// tree.insert(2);
-// tree.insert(12);
-// tree.insert(10);
-// tree.insert(123);
-// tree.insert(69);
-// tree.insert(71);
-// tree.insert(70);
-// tree.insert(68);
+let tree = new Tree(array2);
+tree.insert(2);
+tree.insert(12);
+tree.insert(10);
+tree.insert(123);
+tree.insert(69);
+tree.insert(71);
+tree.insert(70);
+tree.insert(68);
+
 // tree.delete(4);
 // tree.delete(5);
 // tree.delete(7);
@@ -335,6 +349,7 @@ let tree = new Tree(array1);
 // tree.delete(12);
 // tree.delete(23);
 // tree.delete(6345);
+
 // tree.find(23);
 // tree.levelOrderIterative((node) => {
 //   if (node.data > 6) {
@@ -366,7 +381,10 @@ let tree = new Tree(array1);
 //   }
 // });
 // tree.postOrder();
-prettyPrint(tree.root);
 // console.log(tree.height(tree.root));
 // console.log(tree.depth(tree.root));
+prettyPrint(tree.root);
+console.log(tree.isBalanced());
+tree.rebalance();
+prettyPrint(tree.root);
 console.log(tree.isBalanced());
