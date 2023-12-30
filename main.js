@@ -187,6 +187,25 @@ class Tree {
     }
     breadthFirstSearch(this.root);
   }
+
+  inOrder(callback = null) {
+    const depthFirstSearch = (node, array = []) => {
+      if (node === null) {
+        return;
+      }
+      depthFirstSearch(node.left, array);
+      array.push(node.data);
+      if (callback) {
+        callback(node);
+      }
+      depthFirstSearch(node.right, array);
+      return array;
+    };
+    if (!callback) {
+      return console.log(depthFirstSearch(this.root));
+    }
+    depthFirstSearch(this.root);
+  }
 }
 
 const array0 = [1, 2, 3, 4];
@@ -218,10 +237,16 @@ let tree = new Tree(array1);
 //   }
 // });
 // tree.levelOrderIterative();
-tree.levelOrderRecursive((node) => {
-  if (node.data > 6) {
-    console.log(node.data);
+// tree.levelOrderRecursive((node) => {
+//   if (node.data > 6) {
+//     console.log(node.data);
+//   }
+// });
+// tree.levelOrderRecursive();
+tree.inOrder((node) => {
+  if (node.data > 4) {
+    console.log(node.data * 3);
   }
 });
-tree.levelOrderRecursive();
+tree.inOrder();
 prettyPrint(tree.root);
