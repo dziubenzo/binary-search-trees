@@ -246,6 +246,10 @@ class Tree {
   }
 
   height(node) {
+    // Return 0 if the node does not exist
+    if (node === null) {
+      return 0;
+    }
     // Change tree root for the breadth-first search to work
     const originalRoot = this.root;
     this.root = node;
@@ -287,13 +291,33 @@ class Tree {
     };
     return getDepth(node.data);
   }
+
+  isBalanced() {
+    const checkBalance = (node = this.root) => {
+      if (node === null) {
+        return true;
+      }
+      // Condition 1 - the height of the left and right tree for any node does not differ by more than 1
+      if (Math.abs(this.height(node.left) - this.height(node.right)) > 1) {
+        return false;
+        // Condition 2 - the left subtree of that node is also balanced
+      } else if (!checkBalance(node.left)) {
+        return false;
+        // Condition 3 - the right subtree of that node is also balanced
+      } else if (!checkBalance(node.right)) {
+        return false;
+      }
+      return true;
+    };
+    return checkBalance();
+  }
 }
 
 const array0 = [1, 2, 3, 4];
 const array1 = [0, 1, 2, 3, 4, 5, 6, 7];
 const array2 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
-let tree = new Tree(array2);
+let tree = new Tree(array1);
 // tree.insert(2);
 // tree.insert(12);
 // tree.insert(10);
@@ -343,5 +367,6 @@ let tree = new Tree(array2);
 // });
 // tree.postOrder();
 prettyPrint(tree.root);
-console.log(tree.height(tree.root));
-console.log(tree.depth(tree.root));
+// console.log(tree.height(tree.root));
+// console.log(tree.depth(tree.root));
+console.log(tree.isBalanced());
