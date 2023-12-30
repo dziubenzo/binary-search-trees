@@ -206,6 +206,44 @@ class Tree {
     }
     depthFirstSearch(this.root);
   }
+
+  preOrder(callback = null) {
+    const depthFirstSearch = (node, array = []) => {
+      if (node === null) {
+        return;
+      }
+      array.push(node.data);
+      if (callback) {
+        callback(node);
+      }
+      depthFirstSearch(node.left, array);
+      depthFirstSearch(node.right, array);
+      return array;
+    };
+    if (!callback) {
+      return console.log(depthFirstSearch(this.root));
+    }
+    depthFirstSearch(this.root);
+  }
+
+  postOrder(callback = null) {
+    const depthFirstSearch = (node, array = []) => {
+      if (node === null) {
+        return;
+      }
+      depthFirstSearch(node.left, array);
+      depthFirstSearch(node.right, array);
+      array.push(node.data);
+      if (callback) {
+        callback(node);
+      }
+      return array;
+    };
+    if (!callback) {
+      return console.log(depthFirstSearch(this.root));
+    }
+    depthFirstSearch(this.root);
+  }
 }
 
 const array0 = [1, 2, 3, 4];
@@ -243,10 +281,22 @@ let tree = new Tree(array1);
 //   }
 // });
 // tree.levelOrderRecursive();
-tree.inOrder((node) => {
+// tree.inOrder((node) => {
+//   if (node.data > 4) {
+//     console.log(node.data * 3);
+//   }
+// });
+// tree.inOrder();
+tree.preOrder((node) => {
   if (node.data > 4) {
     console.log(node.data * 3);
   }
 });
-tree.inOrder();
+tree.preOrder();
+tree.postOrder((node) => {
+  if (node.data > 4) {
+    console.log(node.data * 3);
+  }
+});
+tree.postOrder();
 prettyPrint(tree.root);
