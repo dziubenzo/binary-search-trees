@@ -254,20 +254,38 @@ class Tree {
     // Bring back the original root
     this.root = originalRoot;
     // Perform binary search to find the last element, adding one to height per each recursive call
-    const findDeepestNode = (value, root = this.root) => {
+    const getHeight = (value, node) => {
       let height = 0;
-      if (value === root.data) {
+      if (value === node.data) {
         return height;
       }
       height++;
-      if (value > root.data) {
-        height += findDeepestNode(value, root.right);
+      if (value > node.data) {
+        height += getHeight(value, node.right);
       } else {
-        height += findDeepestNode(value, root.left);
+        height += getHeight(value, node.left);
       }
       return height;
     };
-    return findDeepestNode(lastElement, node);
+    return getHeight(lastElement, node);
+  }
+
+  depth(node) {
+    // Perform binary search from the tree root to the node, adding one to depth per each recursive call
+    const getDepth = (value, node = this.root) => {
+      let depth = 0;
+      if (value === node.data) {
+        return depth;
+      }
+      depth++;
+      if (value > node.data) {
+        depth += getDepth(value, node.right);
+      } else {
+        depth += getDepth(value, node.left);
+      }
+      return depth;
+    };
+    return getDepth(node.data);
   }
 }
 
@@ -326,3 +344,4 @@ let tree = new Tree(array2);
 // tree.postOrder();
 prettyPrint(tree.root);
 console.log(tree.height(tree.root));
+console.log(tree.depth(tree.root));
