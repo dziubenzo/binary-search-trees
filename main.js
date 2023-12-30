@@ -140,7 +140,7 @@ class Tree {
       }
       return node;
     };
-    return console.log(findValue(value));
+    return findValue(value);
   }
 
   levelOrderIterative(callback = null) {
@@ -160,7 +160,7 @@ class Tree {
       }
     }
     if (!callback) {
-      return console.log(array);
+      return array;
     }
   }
 
@@ -183,7 +183,7 @@ class Tree {
       return array;
     };
     if (!callback) {
-      return console.log(breadthFirstSearch(this.root));
+      return breadthFirstSearch(this.root);
     }
     breadthFirstSearch(this.root);
   }
@@ -202,7 +202,7 @@ class Tree {
       return array;
     };
     if (!callback) {
-      return console.log(depthFirstSearch(this.root));
+      return depthFirstSearch(this.root);
     }
     depthFirstSearch(this.root);
   }
@@ -221,7 +221,7 @@ class Tree {
       return array;
     };
     if (!callback) {
-      return console.log(depthFirstSearch(this.root));
+      return depthFirstSearch(this.root);
     }
     depthFirstSearch(this.root);
   }
@@ -240,9 +240,34 @@ class Tree {
       return array;
     };
     if (!callback) {
-      return console.log(depthFirstSearch(this.root));
+      return depthFirstSearch(this.root);
     }
     depthFirstSearch(this.root);
+  }
+
+  height(node) {
+    // Change tree root for the breadth-first search to work
+    const originalRoot = this.root;
+    this.root = node;
+    // Find the last breadth-first search element of the node
+    const lastElement = parseInt(this.levelOrderIterative().splice(-1, 1));
+    // Bring back the original root
+    this.root = originalRoot;
+    // Perform binary search to find the last element, adding one to height per each recursive call
+    const findDeepestNode = (value, root = this.root) => {
+      let height = 0;
+      if (value === root.data) {
+        return height;
+      }
+      height++;
+      if (value > root.data) {
+        height += findDeepestNode(value, root.right);
+      } else {
+        height += findDeepestNode(value, root.left);
+      }
+      return height;
+    };
+    return findDeepestNode(lastElement, node);
   }
 }
 
@@ -250,7 +275,7 @@ const array0 = [1, 2, 3, 4];
 const array1 = [0, 1, 2, 3, 4, 5, 6, 7];
 const array2 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
-let tree = new Tree(array1);
+let tree = new Tree(array2);
 // tree.insert(2);
 // tree.insert(12);
 // tree.insert(10);
@@ -287,16 +312,17 @@ let tree = new Tree(array1);
 //   }
 // });
 // tree.inOrder();
-tree.preOrder((node) => {
-  if (node.data > 4) {
-    console.log(node.data * 3);
-  }
-});
-tree.preOrder();
-tree.postOrder((node) => {
-  if (node.data > 4) {
-    console.log(node.data * 3);
-  }
-});
-tree.postOrder();
+// tree.preOrder((node) => {
+//   if (node.data > 4) {
+//     console.log(node.data * 3);
+//   }
+// });
+// tree.preOrder();
+// tree.postOrder((node) => {
+//   if (node.data > 4) {
+//     console.log(node.data * 3);
+//   }
+// });
+// tree.postOrder();
 prettyPrint(tree.root);
+console.log(tree.height(tree.root));
