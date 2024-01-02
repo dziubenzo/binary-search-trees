@@ -60,7 +60,7 @@ class Tree {
   constructor(array) {
     // Accept only arrays
     if (!(array instanceof Array)) {
-      throw new Error('Error: Array required.');
+      throw new Error('Array required.');
     }
     // Keep original array
     this.originalArray = array;
@@ -109,6 +109,10 @@ class Tree {
         insertValue(value, root.left);
       }
     };
+    // Prevent adding already-existing values
+    if (this.contains(value)) {
+      throw new Error('Value already in the BST.');
+    }
     insertValue(value);
   }
 
@@ -161,7 +165,18 @@ class Tree {
       }
       findInorderSuccessor(root, currentNode.left);
     };
+    // Prevent deleting non-existing values
+    if (!this.contains(value)) {
+      throw new Error('Value does not exist in the BST.');
+    }
     deleteValue(value);
+  }
+
+  contains(value) {
+    if (this.levelOrderIterative().includes(value)) {
+      return true;
+    }
+    return false;
   }
 
   find(value) {
@@ -362,66 +377,4 @@ class Tree {
   }
 }
 
-const array0 = [1, 2, 3, 4];
-const array1 = [0, 1, 2, 3, 4, 5, 6, 7];
-const array2 = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-
-let tree = new Tree(array2);
-tree.insert(2);
-tree.insert(12);
-tree.insert(10);
-tree.insert(123);
-tree.insert(69);
-tree.insert(71);
-tree.insert(70);
-tree.insert(68);
-
-// tree.delete(4);
-// tree.delete(5);
-// tree.delete(7);
-// tree.delete(8);
-// tree.delete(9);
-// tree.delete(10);
-// tree.delete(12);
-// tree.delete(23);
-// tree.delete(6345);
-
-// tree.find(23);
-// tree.levelOrderIterative((node) => {
-//   if (node.data > 6) {
-//     console.log(node.data);
-//   }
-// });
-// tree.levelOrderIterative();
-// tree.levelOrderRecursive((node) => {
-//   if (node.data > 6) {
-//     console.log(node.data);
-//   }
-// });
-// tree.levelOrderRecursive();
-// tree.inOrder((node) => {
-//   if (node.data > 4) {
-//     console.log(node.data * 3);
-//   }
-// });
-// tree.inOrder();
-// tree.preOrder((node) => {
-//   if (node.data > 4) {
-//     console.log(node.data * 3);
-//   }
-// });
-// tree.preOrder();
-// tree.postOrder((node) => {
-//   if (node.data > 4) {
-//     console.log(node.data * 3);
-//   }
-// });
-// tree.postOrder();
-// console.log(tree.height(tree.root));
-// console.log(tree.depth(tree.root));
-// prettyPrint(tree.root);
-// console.log(tree.isBalanced());
-// tree.rebalance();
-// prettyPrint(tree.root);
-// console.log(tree.isBalanced());
 init();
