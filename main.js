@@ -12,15 +12,40 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
 };
 
-// Create an array of random numbers, with max being exclusive
-function createRandomNumbers(quantity, min, max) {
+// Create an array of random numbers without duplicates, with max being exclusive
+function createRandomNumbers(size, min, max) {
   let array = [];
   min = Math.ceil(min);
   max = Math.floor(max);
-  for (let i = 0; i < quantity; i++) {
-    array.push(Math.floor(Math.random() * (max - min) + min));
+  while (array.length < size) {
+    const number = Math.floor(Math.random() * (max - min) + min);
+    if (!array.includes(number)) {
+      array.push(number);
+    }
   }
   return array;
+}
+
+// Driver script
+function init() {
+  const array = createRandomNumbers(20, 0, 100);
+  const tree = new Tree(array);
+  console.log(tree.isBalanced());
+  console.log(tree.levelOrderRecursive());
+  console.log(tree.preOrder());
+  console.log(tree.postOrder());
+  console.log(tree.inOrder());
+  const extraNumbers = createRandomNumbers(10, 100, 200);
+  for (number of extraNumbers) {
+    tree.insert(number);
+  }
+  console.log(tree.isBalanced());
+  tree.rebalance();
+  console.log(tree.isBalanced());
+  console.log(tree.levelOrderIterative());
+  console.log(tree.preOrder());
+  console.log(tree.postOrder());
+  console.log(tree.inOrder());
 }
 
 class Node {
@@ -394,10 +419,9 @@ tree.insert(68);
 // tree.postOrder();
 // console.log(tree.height(tree.root));
 // console.log(tree.depth(tree.root));
-prettyPrint(tree.root);
-console.log(tree.isBalanced());
-tree.rebalance();
-prettyPrint(tree.root);
-console.log(tree.isBalanced());
-const driverArray = createRandomNumbers(20, 0, 100);
-console.log(driverArray);
+// prettyPrint(tree.root);
+// console.log(tree.isBalanced());
+// tree.rebalance();
+// prettyPrint(tree.root);
+// console.log(tree.isBalanced());
+init();
