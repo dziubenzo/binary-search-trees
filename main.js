@@ -12,6 +12,17 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
 };
 
+// Create an array of random numbers, with max being exclusive
+function createRandomNumbers(quantity, min, max) {
+  let array = [];
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  for (let i = 0; i < quantity; i++) {
+    array.push(Math.floor(Math.random() * (max - min) + min));
+  }
+  return array;
+}
+
 class Node {
   constructor(data) {
     this.data = data;
@@ -388,3 +399,5 @@ console.log(tree.isBalanced());
 tree.rebalance();
 prettyPrint(tree.root);
 console.log(tree.isBalanced());
+const driverArray = createRandomNumbers(20, 0, 100);
+console.log(driverArray);
